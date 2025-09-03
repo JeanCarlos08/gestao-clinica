@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.venv/
+venv/
+
+# Streamlit
+.streamlit/**.lock
+
+# DB e uploads (gerados em runtime)
+uploads/
+gestao_clinica.db
+
+# IDE/Git
+.vscode/
+.DS_Store
+.idea/
+.git/
