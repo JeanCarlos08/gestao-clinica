@@ -12,13 +12,25 @@ DATABASE_PATH = os.path.join(os.path.dirname(__file__), DATABASE_NAME)
 
 @contextmanager
 def get_db_connection():
-    conn = sqlite3.connect(DATABASE_PATH, timeout=30.0)
+    """Contexto de conexão SQLite com rollback em erro e menor risco de lock.
+
+    - check_same_thread=False: permite acesso a partir de diferentes threads (Streamlit)
+    - PRAGMA WAL: melhora concorrência leitura/escrita
+    - rollback em caso de exceção
+    """
+    conn = sqlite3.connect(DATABASE_PATH, timeout=30.0, check_same_thread=False)
     try:
         conn.row_factory = sqlite3.Row
         conn.execute("PRAGMA foreign_keys = ON")
         conn.execute("PRAGMA journal_mode = WAL")
         yield conn
         conn.commit()
+    except Exception:
+        try:
+            conn.rollback()
+        except Exception:
+            pass
+        raise
     finally:
         conn.close()
 
@@ -73,8 +85,20 @@ def inserir_atendimento(empresa: str, nome: str, modalidade: str, data: str, hor
 def listar_atendimentos() -> List[Tuple]:
     try:
         with get_db_connection() as conn:
+            # Ordenação correta mesmo quando a data está em formato dd/mm/YYYY
             rows = conn.execute(
-                "SELECT id, empresa, nome, modalidade, data, hora, laudo_pdf, avaliacao_pdf, status, observacoes FROM atendimentos ORDER BY data DESC, hora DESC"
+                """
+                SELECT id, empresa, nome, modalidade, data, hora, laudo_pdf, avaliacao_pdf, status, observacoes
+                FROM atendimentos
+                ORDER BY (
+                    CASE
+                        WHEN data LIKE '__/__/____'
+                            THEN substr(data, 7, 4) || '-' || substr(data, 4, 2) || '-' || substr(data, 1, 2)
+                        ELSE data
+                    END
+                ) DESC,
+                hora DESC
+                """
             ).fetchall()
             return [tuple(r) for r in rows]
     except Exception:

@@ -17,6 +17,7 @@ COPY . .
 
 RUN mkdir -p /app/uploads
 
+ENV PORT=8501
 EXPOSE 8501
 
-CMD ["python", "-m", "streamlit", "run", "app.py"]
+CMD ["python", "-m", "streamlit", "run", "app.py", "--server.port", "${PORT}", "--server.address", "0.0.0.0"]
