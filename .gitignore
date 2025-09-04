@@ -1,20 +1,67 @@
-# Python
+# Ignorar artefatos fora do projeto principal
+security.log
+gestao_clinica_juliana/
+*.key
+
+# Ambiente e IDE
+.venv/
+venv/
+.vscode/
 __pycache__/
 *.pyc
 *.pyo
 *.pyd
-.venv/
-venv/
-
-# Streamlit
-.streamlit/**.lock
-
-# DB e uploads (gerados em runtime)
-uploads/
-gestao_clinica.db
-
-# IDE/Git
-.vscode/
 .DS_Store
 .idea/
-.git/
+# Dependências
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# Ambiente
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+
+# Banco de dados
+*.db
+*.sqlite
+*.sqlite3
+
+# Logs
+*.log
+audit.log
+security.log
+
+# Arquivos temporários
+*.tmp
+*.temp
+.cache/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Sistema
+.DS_Store
+Thumbs.db
+
+# Uploads
+uploads/
+*.pdf
+uploads/**
+
+# Chaves de segurança
+encryption.key
+*.key
+*.pem
+
+# Configurações específicas
+.streamlit/secrets.toml

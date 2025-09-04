@@ -1,19 +1,11 @@
 # 🧠 JULIANA - Gestão Clínica (MVP)
 
-Aplicação Streamlit para gestão clínica psicológica, com tema visual "Verde Piscina", SQLite como banco padrão, e páginas: Dashboard, Atendimentos, Relatórios, Upload e Configurações.
+Aplicação Streamlit com SQLite, pronta para deploy.
 
-## Como rodar
+## Rodar local
 
-- Python 3.12+
-- Instale dependências:
-
-```
+```powershell
 pip install -r requirements.txt
-```
-
-- Rode:
-
-```
 streamlit run app.py
 ```
 
@@ -21,21 +13,17 @@ Acesse http://localhost:8501
 
 ## Docker
 
-```
+```powershell
 docker build -t gestao-clinica .
 docker run -p 8501:8501 gestao-clinica
 ```
 
-## Estrutura mínima
-
-- app.py (principal)
-- db.py (SQLite)
-- .streamlit/config.toml (server/theme)
+## Estrutura
+- app.py
+- db.py
+- .streamlit/config.toml
 - requirements.txt
-- Procfile (PaaS)
 - Dockerfile
+- Procfile
 
-## Observações
-
-- O arquivo gestao_clinica.db e a pasta uploads são criados em runtime e devem ser ignorados no Git.
-- Não há necessidade de .env para SQLite.
+Banco e uploads são criados em runtime (ignorar no Git).
